@@ -1,18 +1,5 @@
 # at-js-final-task
 
-## Installation
-
-Follow these steps to set up the project locally:
-
-1. Navigate to the project directory:
-   ```sh
-   cd at-js-final-task
-   ```
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
-
 ## Configuration
 
 The WebDriverIO configuration is defined in `src/config/wdio.conf.js`. Key settings include:
@@ -97,11 +84,11 @@ at-js-final-task/
 
 ## Key Files
 
-- **`src/po/tests/loginPage.tests.js`**: Defines the test cases using Mocha and WebDriverIO assertions.
+- **`src/tests/loginPage.tests.js`**: Defines the test cases using Mocha and WebDriverIO assertions.
 - **`src/po/pages/LoginPage.page.js`**: Implements the `LoginPage` class, which interacts with the login form via `FormComponent`.
 - **`src/po/components/form.component.js`**: Provides a `FormComponent` class with methods to locate form elements using XPath selectors.
 - **`src/config/wdio.conf.js`**: Configures the test runner and browser settings.
-- **`src/po/tests/testData.js`**: Exports test data for the three scenarios:
+- **`src/tests/testData.js`**: Exports test data for the three scenarios:
 
 ```js
 emptyCredentials: { username: "", password: "", error: "Epic sadface: Username is required" }
