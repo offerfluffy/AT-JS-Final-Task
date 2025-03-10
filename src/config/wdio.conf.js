@@ -13,12 +13,6 @@ exports.config = {
     {
       browserName: "MicrosoftEdge",
       maxInstances: 2,
-      "ms:edgeOptions": {
-        args: [
-          "--disable-blink-features=Autofill",
-          "--disable-features=AutofillServerCommunication"
-        ]
-      },
     },
   ],
 

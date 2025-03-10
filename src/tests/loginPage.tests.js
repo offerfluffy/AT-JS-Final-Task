@@ -20,7 +20,9 @@ describe("Login Form Test", () => {
   describe("UC-1 Test Login form with empty credentials", () => {
     it('should show error message "Username is required" when credentials are empty', async () => {
       log.info("Testing login with empty credentials");
+
       try {
+        log.info("Setting empty username and password");
         await loginPage.form
           .input(username)
           .setValue(emptyCredentials.username);
@@ -28,26 +30,23 @@ describe("Login Form Test", () => {
           .input(password)
           .setValue(emptyCredentials.password);
 
-        // await loginPage.form.input(username).clearValue();  
-        // await loginPage.form.input(password).clearValue();
-        // Doesnt work in Edge
-
+        log.info("Clearing username and password fields");
         await loginPage.form.input(username).doubleClick();
         await browser.keys(["Backspace"]);
-
         await loginPage.form.input(password).doubleClick();
         await browser.keys(["Backspace"]);
-        
+
         await browser.pause(500);
-        // Imitating user actions
 
+        log.info("Clicking login button");
         await loginPage.form.input(login).click();
-        log.info("Clicked login button");
 
+        log.info("Verifying error message for empty credentials");
         await expect(loginPage.form.input(error)).toBeDisplayed();
         await expect(loginPage.form.input(error)).toHaveText(
           emptyCredentials.error
         );
+        log.info("Error message displayed as expected");
       } catch (e) {
         log.error("Test failed: " + e);
         throw e;
@@ -59,27 +58,26 @@ describe("Login Form Test", () => {
     it('should show error message "Password is required" when credentials have only valid Username', async () => {
       log.info("Testing login with username only");
       try {
+        log.info("Setting username and empty password");
         await loginPage.form.input(username).setValue(usernameOnly.username);
         await loginPage.form.input(password).setValue(usernameOnly.password);
 
-        // await loginPage.form.input(password).clearValue();
-        // Doesnt work in Edge
-
+        log.info("Clearing username and password fields");
         await loginPage.form.input(username).doubleClick();
-
-        await loginPage.form.input(password).doubleClick(); 
+        await loginPage.form.input(password).doubleClick();
         await browser.keys(["Backspace"]);
 
         await browser.pause(500);
-        // Imitating user actions
 
+        log.info("Clicking login button");
         await loginPage.form.input(login).click();
-        log.info("Clicked login button");
 
+        log.info("Verifying error message for missing password");
         await expect(loginPage.form.input(error)).toBeDisplayed();
         await expect(loginPage.form.input(error)).toHaveText(
           usernameOnly.error
         );
+        log.info("Error message displayed as expected");
       } catch (e) {
         log.error("Test failed: " + e);
         throw e;
@@ -91,6 +89,7 @@ describe("Login Form Test", () => {
     it("should pass to dashboard when credentials are valid", async () => {
       log.info("Testing login with valid credentials");
       try {
+        log.info("Setting valid username and password");
         await loginPage.form
           .input(username)
           .setValue(validCredentials.username);
@@ -98,14 +97,15 @@ describe("Login Form Test", () => {
           .input(password)
           .setValue(validCredentials.password);
 
+        log.info("Clicking login button");
         await loginPage.form.input(login).click();
-        log.info("Clicked login button");
 
+        log.info("Verifying navigation to dashboard");
         const currentUrl = await browser.getUrl();
         await expect(currentUrl).toEqual(
           "https://www.saucedemo.com/inventory.html"
         );
-        log.info("Successfully navigated to dashboard");
+        log.info("Successfully navigated to the dashboard");
       } catch (e) {
         log.error("Test failed: " + e);
         throw e;
