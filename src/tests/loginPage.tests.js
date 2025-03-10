@@ -57,6 +57,7 @@ describe("Login Form Test", () => {
   describe("UC-2 Test Login form with credentials by passing Username", () => {
     it('should show error message "Password is required" when credentials have only valid Username', async () => {
       log.info("Testing login with username only");
+
       try {
         log.info("Setting username and empty password");
         await loginPage.form.input(username).setValue(usernameOnly.username);
@@ -88,6 +89,7 @@ describe("Login Form Test", () => {
   describe("UC-3 Test Login form with valid credentials", () => {
     it("should pass to dashboard when credentials are valid", async () => {
       log.info("Testing login with valid credentials");
+      
       try {
         log.info("Setting valid username and password");
         await loginPage.form
