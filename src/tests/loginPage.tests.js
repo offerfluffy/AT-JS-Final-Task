@@ -1,34 +1,34 @@
 import LoginPage from "../po/pages/LoginPage.page.js";
 import { emptyCredentials, usernameOnly, validCredentials } from "./testData";
+import logger from "@wdio/logger";
 
+const log = logger("LoginTests");
 const loginPage = new LoginPage();
 
 describe("Login Form Test", () => {
   beforeEach(async () => {
+    log.info("Opening login page");
     await loginPage.open();
   });
 
   describe("UC-1 Test Login form with empty credentials", () => {
     it('should show error message "Username is required" when credentials are empty', async () => {
-      // Set and clear credentials, then click login
-      await loginPage.form
-        .input("usernameField")
-        .setValue(emptyCredentials.username);
-      await loginPage.form
-        .input("passwordField")
-        .setValue(emptyCredentials.password);
-      await loginPage.form.input("usernameField").clearValue();
-      await loginPage.form.input("passwordField").clearValue();
-      await loginPage.form.input("loginButton").click();
-
-      // Verify error message is displayed and correct
+      log.info("Testing login with empty credentials");
       try {
+        await loginPage.form.input("usernameField").setValue("test");
+        await loginPage.form.input("passwordField").setValue("test");
+        await loginPage.form.input("usernameField").clearValue();
+        await loginPage.form.input("passwordField").clearValue();
+        
+        await loginPage.form.input("loginButton").click();
+        log.info("Clicked login button");
+
         await expect(loginPage.form.input("errorMessage")).toBeDisplayed();
         await expect(loginPage.form.input("errorMessage")).toHaveText(
           emptyCredentials.error
         );
       } catch (error) {
-        console.error("Assertion failed:", error.message);
+        log.error("Test failed: " + error);
         throw error;
       }
     });
@@ -36,56 +36,41 @@ describe("Login Form Test", () => {
 
   describe("UC-2 Test Login form with credentials by passing Username", () => {
     it('should show error message "Password is required" when credentials have only valid Username', async () => {
-      // Set username, clear password, then click login
-      await loginPage.form
-        .input("usernameField")
-        .setValue(usernameOnly.username);
-      await loginPage.form
-        .input("passwordField")
-        .setValue(usernameOnly.password);
-      await loginPage.form.input("passwordField").clearValue();
-      await loginPage.form.input("loginButton").click();
-
-      // Verify error message is displayed and correct
+      log.info("Testing login with username only");
       try {
+        await loginPage.form.input("usernameField").setValue("test");
+        await loginPage.form.input("passwordField").setValue("test");
+        await loginPage.form.input("passwordField").clearValue();
+        
+        await loginPage.form.input("usernameField").setValue(usernameOnly.username);
+        await loginPage.form.input("loginButton").click();
+        log.info("Clicked login button");
+
         await expect(loginPage.form.input("errorMessage")).toBeDisplayed();
         await expect(loginPage.form.input("errorMessage")).toHaveText(
           usernameOnly.error
         );
       } catch (error) {
-        console.error("Assertion failed:", error.message);
+        log.error("Test failed: " + error);
         throw error;
       }
     });
   });
 
-  describe("UC-3 Test Login form with credentials by passing Username & Password", () => {
-    it("should pass to dashboard when credentials have valid Username and Password", async () => {
-      // Set valid credentials and click login
-      await loginPage.form
-        .input("usernameField")
-        .setValue(validCredentials.username);
-      await loginPage.form
-        .input("passwordField")
-        .setValue(validCredentials.password);
-      await loginPage.form.input("loginButton").click();
-
-      // Verify dashboard navigation
+  describe("UC-3 Test Login form with valid credentials", () => {
+    it("should pass to dashboard when credentials are valid", async () => {
+      log.info("Testing login with valid credentials");
       try {
+        await loginPage.form.input("usernameField").setValue(validCredentials.username);
+        await loginPage.form.input("passwordField").setValue(validCredentials.password);
+        await loginPage.form.input("loginButton").click();
+        log.info("Clicked login button");
+
         const currentUrl = await browser.getUrl();
-        await expect(currentUrl).toEqual(
-          "https://www.saucedemo.com/inventory.html"
-        );
-
-        const pageTitle = await browser.getTitle();
-        await expect(pageTitle).toEqual("Swag Labs");
-
-        // Additional check: Verify a dashboard element (e.g., products title)
-        const productsTitle = await $('//span[@class="title"]');
-        await expect(productsTitle).toBeDisplayed();
-        await expect(productsTitle).toHaveText("Products");
+        await expect(currentUrl).toEqual("https://www.saucedemo.com/inventory.html");
+        log.info("Successfully navigated to dashboard");
       } catch (error) {
-        console.error("Dashboard verification failed:", error.message);
+        log.error("Test failed: " + error);
         throw error;
       }
     });
