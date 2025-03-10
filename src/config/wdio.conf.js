@@ -1,10 +1,21 @@
 exports.config = {
   runner: "local",
+  
   specs: ["../tests/*.js"],
+
+  maxInstances: 2,
+
   capabilities: [
-    { browserName: "firefox", }
-    // { browserName: "MicrosoftEdge" }, // Uncomment if you want to test Edge
+    {
+      browserName: "firefox",
+      maxInstances: 1,
+    },
+    {
+      browserName: "MicrosoftEdge",
+      maxInstances: 1,
+    }
   ],
+
   logLevel: "info",
   waitforTimeout: 15000,
   connectionRetryTimeout: 120000,
