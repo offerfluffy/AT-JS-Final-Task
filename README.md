@@ -11,22 +11,6 @@ The WebDriverIO configuration is defined in `src/config/wdio.conf.js`. Key setti
 - **Reporter**: Spec reporter for detailed console output.
 - **Timeouts**: 10 seconds for element waits, 60 seconds for test timeouts.
 
-### Customizing Configuration
-
-To run tests on Microsoft Edge, uncomment the Edge capability in `src/config/wdio.conf.js`:
-```js
-capabilities: [
-  {
-    browserName: 'MicrosoftEdge'
-  },
-  {
-    browserName: 'firefox'
-  }
-],
-```
-
-Adjust the `specs` path if your test files are moved to a different directory.
-
 ## Running Tests
 
 Execute the tests with the following command from the project root:
@@ -43,7 +27,7 @@ The test suite will execute three test cases, displaying results such as:
 
 - **UC-1**: Pass if the "Username is required" error is shown.
 - **UC-2**: Pass if the "Password is required" error is shown.
-- **UC-3**: Pass if the login redirects to the dashboard with the correct URL and title.
+- **UC-3**: Pass if the login redirects to the dashboard with the correct URL and title (Additional check: Verify a dashboard element (e.g., products title)).
 
 ## Test Cases
 
