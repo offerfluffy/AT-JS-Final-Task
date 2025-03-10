@@ -1,23 +1,29 @@
 exports.config = {
   runner: "local",
-  
+
   specs: ["../tests/*.js"],
 
-  maxInstances: 2,
+  maxInstances: 4,
 
   capabilities: [
     {
       browserName: "firefox",
-      maxInstances: 1,
+      maxInstances: 2,
     },
     {
       browserName: "MicrosoftEdge",
-      maxInstances: 1,
-    }
+      maxInstances: 2,
+      "ms:edgeOptions": {
+        args: [
+          "--disable-blink-features=Autofill",
+          "--disable-features=AutofillServerCommunication"
+        ]
+      },
+    },
   ],
 
   logLevel: "info",
-  waitforTimeout: 15000,
+  waitforTimeout: 5000,
   connectionRetryTimeout: 120000,
   connectionRetryCount: 3,
   framework: "mocha",
@@ -25,5 +31,5 @@ exports.config = {
   mochaOpts: {
     ui: "bdd",
     timeout: 60000,
-  }
+  },
 };

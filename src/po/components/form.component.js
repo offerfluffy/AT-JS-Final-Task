@@ -1,22 +1,22 @@
 import logger from "@wdio/logger";
 class FormComponent {
   constructor() {
-    this.logger = logger("FormComponent")
+    this.logger = logger("FormComponent");
   }
-  
+
   // Selectors as XPath strings
   get selectors() {
     return {
-      usernamefield: '//input[@id="user-name"]',
-      passwordfield: '//input[@id="password"]',
-      loginbutton: '//input[@id="login-button"]',
-      errormessage: '//h3[@data-test="error"]',
+      usernameField: '//input[@id="user-name"]',
+      passwordField: '//input[@id="password"]',
+      loginButton: '//input[@id="login-button"]',
+      errorMessage: '//h3[@data-test="error"]',
     };
   }
 
   // Input method with direct selector access and logging
   input(param) {
-    const selector = this.selectors[param.toLowerCase()];
+    const selector = this.selectors[param];
 
     if (!selector) {
       this.logger.error(`Invalid selector parameter: ${param}`);
