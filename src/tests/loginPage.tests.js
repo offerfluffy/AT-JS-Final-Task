@@ -4,12 +4,13 @@ import {
   usernameOnly,
   validCredentials,
   filedNames,
-} from "./testData";
+  loggerMessages,
+  urls,
+} from "../data/testData.js";
 import logger from "@wdio/logger";
 
 const log = logger("LoginTests");
 const loginPage = new LoginPage();
-const { username, password, login, error } = filedNames;
 
 describe("Login Form Test", () => {
   beforeEach(async () => {
@@ -23,28 +24,18 @@ describe("Login Form Test", () => {
 
       try {
         log.info("Setting empty username and password");
-        await loginPage.form
-          .input(username)
-          .setValue(emptyCredentials.username);
-        await loginPage.form
-          .input(password)
-          .setValue(emptyCredentials.password);
+        await loginPage.fillLoginForm(
+          emptyCredentials.username,
+          emptyCredentials.password
+        );
 
-        log.info("Clearing username and password fields");
-        await loginPage.form.input(username).doubleClick();
-        await browser.keys(["Backspace"]);
-        await loginPage.form.input(password).doubleClick();
-        await browser.keys(["Backspace"]);
+        await loginPage.clearLoginFormFields("UC1");
 
-        await browser.pause(500);
+        await loginPage.submitLoginForm();
 
-        log.info("Clicking login button");
-        await loginPage.form.input(login).click();
-
-        log.info("Verifying error message for empty credentials");
-        await expect(loginPage.form.input(error)).toBeDisplayed();
-        await expect(loginPage.form.input(error)).toHaveText(
-          emptyCredentials.error
+        await loginPage.checkErrorMessage(
+          emptyCredentials.error,
+          loggerMessages.UC1
         );
         log.info("Error message displayed as expected");
       } catch (e) {
@@ -60,23 +51,18 @@ describe("Login Form Test", () => {
 
       try {
         log.info("Setting username and empty password");
-        await loginPage.form.input(username).setValue(usernameOnly.username);
-        await loginPage.form.input(password).setValue(usernameOnly.password);
+        await loginPage.fillLoginForm(
+          usernameOnly.username,
+          usernameOnly.password
+        );
 
-        log.info("Clearing username and password fields");
-        await loginPage.form.input(username).doubleClick();
-        await loginPage.form.input(password).doubleClick();
-        await browser.keys(["Backspace"]);
+        await loginPage.clearLoginFormFields("UC2");
 
-        await browser.pause(500);
+        await loginPage.submitLoginForm();
 
-        log.info("Clicking login button");
-        await loginPage.form.input(login).click();
-
-        log.info("Verifying error message for missing password");
-        await expect(loginPage.form.input(error)).toBeDisplayed();
-        await expect(loginPage.form.input(error)).toHaveText(
-          usernameOnly.error
+        await loginPage.checkErrorMessage(
+          usernameOnly.error,
+          loggerMessages.UC2
         );
         log.info("Error message displayed as expected");
       } catch (e) {
@@ -89,24 +75,19 @@ describe("Login Form Test", () => {
   describe("UC-3 Test Login form with valid credentials", () => {
     it("should pass to dashboard when credentials are valid", async () => {
       log.info("Testing login with valid credentials");
-      
+
       try {
         log.info("Setting valid username and password");
-        await loginPage.form
-          .input(username)
-          .setValue(validCredentials.username);
-        await loginPage.form
-          .input(password)
-          .setValue(validCredentials.password);
+        await loginPage.fillLoginForm(
+          validCredentials.username,
+          validCredentials.password
+        );
 
-        log.info("Clicking login button");
-        await loginPage.form.input(login).click();
+        await loginPage.submitLoginForm();
 
         log.info("Verifying navigation to dashboard");
         const currentUrl = await browser.getUrl();
-        await expect(currentUrl).toEqual(
-          "https://www.saucedemo.com/inventory.html"
-        );
+        await expect(currentUrl).toEqual(urls.dashboardUrl);
         log.info("Successfully navigated to the dashboard");
       } catch (e) {
         log.error("Test failed: " + e);

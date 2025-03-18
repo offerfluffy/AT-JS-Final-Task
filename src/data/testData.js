@@ -22,3 +22,13 @@ export const filedNames = {
   login: "loginButton",
   error: "errorMessage",
 };
+
+export const loggerMessages = {
+  UC1: "empty credentials",
+  UC2: "missing password" 
+}
+
+export const urls = {
+  baseUrl: "https://www.saucedemo.com/",
+  dashboardUrl: "https://www.saucedemo.com/inventory.html"
+}
