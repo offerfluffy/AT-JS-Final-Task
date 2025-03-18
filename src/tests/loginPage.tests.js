@@ -3,7 +3,6 @@ import {
   emptyCredentials,
   usernameOnly,
   validCredentials,
-  filedNames,
   loggerMessages,
   urls,
 } from "../data/testData.js";
